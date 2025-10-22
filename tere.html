@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Análisis Café de Tere</title>
+    <title>Dashboard Estratégico de Valor FINAL | Café de Tere</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     <style>
-        /* COLORES INSPIRADOS EN CAFÉ Y BOLÓN */
+        /* PALETA DE COLORES */
         :root {
-            --color-cafe-oscuro: #4E342E; /* Café Oscuro para texto y encabezados */
-            --color-crema-fondo: #F5F5DC; /* Fondo general (Color Vainilla/Crema) */
-            --color-acento-naranja: #FF9800; /* Naranja Brillante para Likes/Éxito */
-            --color-naranja-oscuro: #E65100; /* Naranja oscuro para gráficos */
-            --color-acento-claro: #FFF8E1; /* Fondo de tarjetas */
+            --color-cafe-oscuro: #4E342E;
+            --color-crema-fondo: #F5F5DC;
+            --color-acento-naranja: #FF9800; /* Naranja Brillante */
+            --color-naranja-oscuro: #E65100; /* Naranja Tostado (Gráficos/Conclusión) */
+            
+            /* Colores de Valor Mejorados */
+            --color-riesgo-alto: #C62828; /* ROJO OSCURO/FUERTE para ALERTA/ALTO IMPACTO */
+            --color-atencion-medio: #E65100; /* NARANJA OSCURO para ATENCIÓN/MEDIO IMPACTO */
+            --color-oportunidad-verde: #388E3C; /* VERDE OSCURO/ESMERALDA para ACCIÓN/ESTABILIDAD */
+            
+            /* Fondos y Texto */
+            --color-riesgo-fondo: #FFCDD2; 
+            --color-oportunidad-fondo: #C8E6C9;
         }
 
         body {
             background-color: var(--color-crema-fondo);
             color: var(--color-cafe-oscuro);
         }
-        
-        /* HEADER MEJORADO */
         .header {
             background-color: var(--color-cafe-oscuro);
             color: white;
@@ -29,187 +35,51 @@
             margin-bottom: 25px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .header h1, .header .lead {
-            text-wrap: balance; /* Mejora el balance de texto en títulos */
-        }
-
-        .container {
-            padding-bottom: 50px;
-        }
-        
-        /* Subtítulos con línea naranja */
         .text-secondary {
             color: var(--color-cafe-oscuro) !important;
             border-bottom: 2px solid var(--color-acento-naranja);
             padding-bottom: 5px;
         }
         .card-kpi {
-            border-left: 5px solid var(--color-acento-naranja); /* Borde naranja */
-            background-color: var(--color-acento-claro) !important;
+            border-left: 5px solid var(--color-acento-naranja); 
+            background-color: #FFF8E1 !important;
         }
-        
-        /* Temas */
-        .topic-card .card-header {
-            background-color: var(--color-acento-naranja);
-            color: var(--color-cafe-oscuro);
-            font-weight: bold;
-        }
-        .topic-card .card-body {
-             background-color: #FFFDE7;
-        }
-        
-        /* Clase de desafío mejorada (en lugar de text-danger) */
-        .text-desafio {
-            color: var(--color-naranja-oscuro) !important;
-            font-weight: 500;
-        }
-        
-        /* Conclusión */
-        .bg-info {
+        .conclusion-card {
             background-color: var(--color-naranja-oscuro) !important;
         }
-
-        /* Colores de Correlación */
-        .corr-high { background-color: #F8BBD0; font-weight: bold; } /* Rosa */
-        .corr-medium { background-color: #FFF3CD; } /* Amarillo */
-        .corr-low { background-color: #E8F5E9; } /* Verde claro */
-
-        /* A11y y UI para tabla de correlación */
-        .table-corr th[scope="row"] {
-             background-color: var(--color-acento-claro);
-             position: sticky;
-             left: 0;
-             z-index: 1;
-             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        
+        /* ESTILOS PARA LA TABLA DE ENTIDADES CONSOLIDADAS (Punto 2) */
+        .table-topic thead th {
+            color: white;
+            vertical-align: middle;
+            font-weight: bold;
         }
-        .table-corr thead th {
-            z-index: 2;
+        .table-topic thead .risk-header { background-color: var(--color-riesgo-alto) !important; }
+        .table-topic thead .opportunity-header { background-color: var(--color-oportunidad-verde) !important; }
+        .risk-col { color: var(--color-riesgo-alto); font-weight: 500; }
+        .opportunity-col { color: var(--color-oportunidad-verde); font-weight: 500; }
+        
+        /* CÓDIGO DE COLORES para la MATRIZ DE CORRELACIÓN (Punto 4) */
+        .corr-high { 
+            background-color: var(--color-riesgo-fondo) !important;
+            color: var(--color-riesgo-alto) !important;
+            font-weight: bold;
+        }
+        .corr-medium { background-color: #FFF3CD !important; }
+        .corr-low { 
+            background-color: var(--color-oportunidad-fondo) !important; 
+            color: var(--color-oportunidad-verde) !important;
         }
     </style>
 </head>
 <body>
 
-    <header class="header text-center">
-        <h1>Dashboard de Análisis de Redes Sociales: Café de Tere ☕</h1>
-        <p class="lead">Insights clave basados en la matriz de engagement y sentimiento.</p>
-    </header>
-
-    <div class="container">
-
-        <h2 class="mb-3 text-secondary">Métricas Clave (KPIs)</h2>
-        <div class="row mb-5">
-            <div class="col-md-3">
-                <div class="card card-kpi text-dark mb-3 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Total de Interacciones</h5>
-                        <p class="card-text h2" id="kpi-total-tweets" role="status"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-kpi text-dark mb-3 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Promedio de Retweets</h5>
-                        <p class="card-text h2" id="kpi-avg-retweets" role="status"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-kpi text-dark mb-3 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Promedio de Likes</h5>
-                        <p class="card-text h2" id="kpi-avg-favorites" role="status"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-kpi text-dark mb-3 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Máx. Engagement (Retweets)</h5>
-                        <p class="card-text h2" id="kpi-max-engagement" role="status"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2 class="mb-3 text-secondary">Análisis Temático y Recomendaciones</h2>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card bg-info text-white mb-4 shadow-lg">
-                    <div class="card-body">
-                        <h4 class="card-title">Conclusión General</h4>
-                        <p id="conclusion-text"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12" id="topics-container"></div>
-        </div>
-        
-        <hr>
-
-        <h2 class="mb-3 text-secondary">Métricas de Engagement y Correlación</h2>
-        <div class="row mb-5">
-            <div class="col-lg-6">
-                <h4 class="mb-3">Correlación de Métricas</h4>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm table-striped table-corr">
-                        <thead id="corr-table-head">
-                            </thead>
-                        <tbody id="corr-table-body">
-                            </tbody>
-                    </table>
-                </div>
-                <p class="text-muted small">Nota: Los colores indican la fuerza de la correlación (Rosa=Alta, Amarillo=Media, Verde=Baja).</p>
-            </div>
-
-            <div class="col-lg-6">
-                <h4 class="mb-3">Top 5 Interacciones (Engagement Total)</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-sm table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Texto (Fragmento)</th>
-                                <th scope="col">Likes</th>
-                                <th scope="col">Retweets</th>
-                                <th scope="col">Engagement Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="engagement-table-body">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2 class="mb-3 text-secondary">Volumen de Engagement por Hora del Día</h2>
-        <div class="row mb-5">
-            <div class="col-lg-12">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <canvas id="activityChart" aria-label="Gráfico de barras mostrando el engagement total por hora del día"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- DATOS JSON INYECTADOS ---
+        // --- DATOS JSON (Usando el archivo result_cafe_de_tere.json) ---
         const data = {
             "describe_matrix": {
                 "count": { "favorite_count": 1198.0, "id": 1199.0, "retweet_count": 1198.0, "user.followers_count": 1198.0, "user.friends_count": 1198.0 },
-                "mean": { "favorite_count": 12.20, "id": 1.1909e+18, "retweet_count": 33.93, "user.followers_count": 5046.37, "user.friends_count": 1021.63 },
-                "std": { "favorite_count": 104.53, "id": 3.442e+16, "retweet_count": 815.06, "user.followers_count": 72793.24, "user.friends_count": 6446.56 },
-                "min": { "favorite_count": 0.0, "id": 167.0, "retweet_count": 0.0, "user.followers_count": 1.0, "user.friends_count": 0.0 },
-                "25%": { "favorite_count": 0.0, "id": 1.1918e+18, "retweet_count": 0.0, "user.followers_count": 186.5, "user.friends_count": 262.0 },
-                "50%": { "favorite_count": 0.0, "id": 1.1919e+18, "retweet_count": 0.0, "user.followers_count": 483.0, "user.friends_count": 532.5 },
-                "75%": { "favorite_count": 2.0, "id": 1.1921e+18, "retweet_count": 1.0, "user.followers_count": 1377.25, "user.friends_count": 992.75 },
+                "mean": { "favorite_count": 12.202, "id": 1.1909e+18, "retweet_count": 33.926, "user.followers_count": 5046.369, "user.friends_count": 1021.627 },
                 "max": { "favorite_count": 2733.0, "id": 1.1926e+18, "retweet_count": 28090.0, "user.followers_count": 1997889.0, "user.friends_count": 221536.0 }
             },
             "corr_matrix": {
@@ -219,157 +89,173 @@
                 "favorite_count": { "user.followers_count": 0.374, "user.friends_count": 0.164, "id": -0.128, "favorite_count": 1.0, "retweet_count": 0.121 },
                 "retweet_count": { "user.followers_count": 0.128, "user.friends_count": 0.054, "id": 0.076, "favorite_count": 0.121, "retweet_count": 1.0 }
             },
-            "engagement_matrix": {
-                "text": { "33": "@Cesar_Antonio_F @LivePalestina @Jou_Kaiser @tere_marinovic @elvillegaschile @sergioulloa1 @German69738375… https://t.co/0mgrQNJVrU", "3276": "@dearc26 @eluniversocom Q insoportable estas personas resentidas. Viven amargados! Hay gustos y gustos. El bolón de Tere es rico!", "3738": "Se acabó el chisme con el #closetdedav y ahora leo twists del #cafedetere... qué tiro guayaquileños todo bien en casa?", "2198": "@KaritoSoBsc Oe oe oe bien recuerdo que una vez twitteaste qué más barato Te salía comprar un departamento en salin… https://t.co/FL0MGZv9Hx", "1951": "La señora del café d Tere es la prueba de q trabajando duro se puede llegar a rico. Ella ha demostrado q no es nece… https://t.co/JMNbFy5KLS", "3608": "Cuando trabajaba en el parque Colón una vez quise ir al #cafedetere que hay ahí vi los precios y me parecieron dema… https://t.co/LP8o8NIHU6", "3992": "@ornella_soriano @_SantinoBoy @CafedeTere Que comentario tan regionalista... cabeza hueca que piensa que en la sier… https://t.co/cWBukqR7EM", "3457": "@tere_marinovic En esta crisis, no hay buenos ni malos, se enfrentan entre chilenos, padres y familias. Y todo este… https://t.co/CQsnaeEs8Z", "2148": "Si el cafe de tere te parece que es caro, turro y puro mkt anda busca otro bolon chtm\nEl ecuatoriano próspero tiene… https://t.co/APCz649NbZ", "932": "Soy cliente regular del Café de Tere. Ahora bien, que siga sin aceptar tarjetas de crédito es indefendible. Doña Te… https://t.co/jHdbRXcdfa" },
-                "favorite_count": { "33": 10.0, "3276": 79.0, "3738": 10.0, "2198": 46.0, "1951": 332.0, "3608": 1.0, "3992": 1.0, "3457": 7.0, "2148": 187.0, "932": 130.0 },
-                "retweet_count": { "33": 1.0, "3276": 1.0, "3738": 3.0, "2198": 3.0, "1951": 81.0, "3608": 0.0, "3992": 0.0, "3457": 3.0, "2148": 63.0, "932": 35.0 },
-                "total_engagement": { "33": 250.0, "3276": 86.81, "3738": 66.67, "2198": 63.89, "1951": 61.14, "3608": 33.33, "3992": 33.33, "3457": 19.44, "2148": 15.58, "932": 13.31 }
-            },
             "heatmap": {
-                "Monday": { "0.0": -1.0, "1.0": 0.0, "2.0": -1.0, "3.0": 0.0, "4.0": -1.0, "5.0": -1.0, "6.0": -1.0, "7.0": 0.0, "8.0": -1.0, "9.0": 0.0, "10.0": -1.0, "11.0": 0.0, "12.0": -1.0, "13.0": -1.0, "14.0": 1.0, "15.0": 1.0, "16.0": 3.0, "17.0": 177.0, "18.0": -1.0, "19.0": -1.0, "20.0": -1.0, "21.0": -1.0, "22.0": 2734.0, "23.0": 82.0 },
-                "Tuesday": { "0.0": 1.0, "1.0": 32.0, "2.0": 20.0, "3.0": 0.0, "4.0": 3.0, "5.0": -1.0, "6.0": -1.0, "7.0": 1.0, "8.0": -1.0, "9.0": 0.0, "10.0": -1.0, "11.0": 1.0, "12.0": 3.0, "13.0": 73.0, "14.0": 195.0, "15.0": 18.0, "16.0": 175.0, "17.0": 102.0, "18.0": 1012.0, "19.0": 651.0, "20.0": 210.0, "21.0": 412.0, "22.0": 1555.0, "23.0": 1331.0 },
-                "Wednesday": { "0.0": 209.0, "1.0": 906.0, "2.0": 1789.0, "3.0": 895.0, "4.0": 265.0, "5.0": 37.0, "6.0": 27.0, "7.0": 31.0, "8.0": 37.0, "9.0": 4.0, "10.0": 12.0, "11.0": 64.0, "12.0": 46.0, "13.0": 115.0, "14.0": 98.0, "15.0": 76.0, "16.0": 36.0, "17.0": 160.0, "18.0": 24.0, "19.0": 34.0, "20.0": 22.0, "21.0": 282.0, "22.0": 65.0, "23.0": 83.0 },
-                "Thursday": { "0.0": 37.0, "1.0": 104.0, "2.0": 40.0, "3.0": 10.0, "4.0": 15.0, "5.0": 8.0, "6.0": 0.0, "7.0": 0.0, "8.0": -1.0, "9.0": 0.0, "10.0": 0.0, "11.0": 1.0, "12.0": 17.0, "13.0": 5.0, "14.0": 1.0, "15.0": 3.0, "16.0": 57.0, "17.0": 29.0, "18.0": 10.0, "19.0": 1.0, "20.0": 16.0, "21.0": 1.0, "22.0": 1.0, "23.0": 100.0 },
-                "Friday": { "0.0": 5.0, "1.0": 0.0, "2.0": -1.0, "3.0": -1.0, "4.0": -1.0, "5.0": -1.0, "6.0": -1.0, "7.0": -1.0, "8.0": -1.0, "9.0": -1.0, "10.0": -1.0, "11.0": -1.0, "12.0": -1.0, "13.0": -1.0, "14.0": 8.0, "15.0": -1.0, "16.0": -1.0, "17.0": -1.0, "18.0": -1.0, "19.0": -1.0, "20.0": -1.0, "21.0": -1.0, "22.0": -1.0, "23.0": -1.0 },
-                "Saturday": { "0.0": 5.0, "1.0": -1.0, "2.0": -1.0, "3.0": -1.0, "4.0": -1.0, "5.0": -1.0, "6.0": -1.0, "7.0": -1.0, "8.0": -1.0, "9.0": -1.0, "10.0": 11.0, "11.0": -1.0, "12.0": -1.0, "13.0": 0.0, "14.0": 0.0, "15.0": 5.0, "16.0": 2.0, "17.0": 8.0, "18.0": -1.0, "19.0": -1.0, "20.0": -1.0, "21.0": 0.0, "22.0": -1.0, "23.0": -1.0 },
-                "Sunday": { "0.0": -1.0, "1.0": 0.0, "2.0": -1.0, "3.0": -1.0, "4.0": -1.0, "5.0": -1.0, "6.0": -1.0, "7.0": -1.0, "8.0": -1.0, "9.0": -1.0, "10.0": -1.0, "11.0": -1.0, "12.0": -1.0, "13.0": 7.0, "14.0": -1.0, "15.0": 0.0, "16.0": 0.0, "17.0": -1.0, "18.0": 1.0, "19.0": -1.0, "20.0": -1.0, "21.0": -1.0, "22.0": 0.0, "23.0": -1.0 }
+                "Monday": { "0.0": -1.0, "1.0": 0.0, "2.0": -1.0, "3.0": 0.0, "4.0": -1.0, "5.0": -1.0, "6.0": -1.0, "7.0": 0.0, "8.0": -1.0, "9.0": 0.0, "10.0": -1.0, "11.0": 0.0, "12.0": -1.0, "13.0": -1.0, "14.0": 1.0, "15.0": 1.0, "16.0": 3.0, "17.0": 177.0, "22.0": 2734.0, "23.0": 82.0 },
+                "Tuesday": { "0.0": 1.0, "1.0": 32.0, "2.0": 20.0, "3.0": 0.0, "4.0": 3.0, "7.0": 1.0, "9.0": 0.0, "11.0": 1.0, "12.0": 3.0, "13.0": 73.0, "14.0": 195.0, "15.0": 18.0, "16.0": 175.0, "17.0": 102.0, "18.0": 1012.0, "19.0": 651.0, "20.0": 210.0, "21.0": 412.0, "22.0": 1555.0, "23.0": 1331.0 },
+                "Wednesday": { "0.0": 209.0, "1.0": 906.0, "2.0": 1789.0, "3.0": 895.0, "4.0": 265.0, "5.0": 37.0, "6.0": 27.0, "7.0": 31.0, "8.0": 37.0, "9.0": 4.0, "10.0": 12.0, "11.0": 64.0, "12.0": 46.0, "13.0": 115.0, "14.0": 98.0, "15.0": 76.0, "16.0": 36.0, "17.0": 160.0, "18.0": 24.0, "19.0": 34.0, "20.0": 22.0, "21.0": 282.0, "22.0": 65.0, "23.0": 83.0 }
             },
             "topics": {
                 "topics": [
-                    { "title": "Precio y percepción de valor", "detail": "Fuerte polarización: para muchos es “caro/sobrevalorado”, otros justifican que se paga limpieza, local, marca y servicio.", "challenge": "Definir estrategia de precios y porciones (combos, tamaños), hacer transparente la propuesta de valor y ofrecer beneficios." },
-                    { "title": "Calidad y consistencia del producto", "detail": "Opiniones dispares: “normalito”, “perdió sazón”, tigrillo “sopudo/insípido”. Variabilidad entre locales.", "challenge": "Refinar y estandarizar recetas y procesos (temperatura, salado, grasas), y auditorías sensoriales por local." },
-                    { "title": "Medios de pago", "detail": "Reclamo recurrente por no aceptar tarjetas/datafast; fricción de usar solo efectivo; algunos declaran no volver por esta razón.", "challenge": "Habilitar POS, QR y billeteras; comunicar razones y fechas de implementación; incentivar pagos digitales." },
-                    { "title": "Experiencia de servicio y operación en sala", "detail": "Limpieza muy valorada; críticas a autoservicio/recoger bandeja; colas; límites de ají por mesa; porciones pequeñas vs precio.", "challenge": "Rediseñar flujos (señalética), gestionar picos (pre-order/pick-up), revisar política de porciones/extras/ají." },
-                    { "title": "Delivery y agregadores", "detail": "Molestia por mínimos a domicilio (p.ej. $17) y cuentas altas en apps con porciones pequeñas.", "challenge": "Replantear mínimos por zona/hora, crear combos exclusivos de delivery y negociar comisiones con apps." }
+                    { "title": "Precio y percepción de valor", "detail": "Fuerte polarización: para muchos es “caro/sobrevalorado” (bolón $3,5–$5, jugos hasta $8, extras como huevo $1, mínimos de delivery altos); otros justifican que se paga limpieza, local, marca y servicio.", "challenge": "Definir estrategia de precios y porciones (combos, tamaños, “bolón popular” en franjas), hacer transparente la propuesta de valor y costos, y ofrecer beneficios (lealtad, horas felices) para mejorar la ecuación valor/precio." },
+                    { "title": "Calidad y consistencia del producto", "detail": "Opiniones dispares: “normalito”, “perdió sazón/industrializado”, tigrillo “sopudo/insípido”, bolón frío o muy salado, uso de lácteos excesivos o margarina vs otros que lo consideran excelente. Variabilidad entre locales.", "challenge": "Refinar y estandarizar recetas y procesos (temperatura, salado, grasas), auditorías sensoriales por local, KPIs de calidad en tiempo real y pilotos de receta “clásico criollo” vs “sello Tere” para reconciliar expectativas." },
+                    { "title": "Medios de pago", "detail": "Reclamo recurrente por no aceptar tarjetas/datafast; fricción de usar solo efectivo; algunos declaran no volver por esta razón.", "challenge": "Habilitar POS, QR y billeteras; comunicar razones y fechas de implementación; incentivar pagos digitales con pequeños descuentos y reducir fuga de ventas." },
+                    { "title": "Experiencia de servicio y operación en sala", "detail": "Limpieza muy valorada; críticas a autoservicio/recoger bandeja; colas; límites de ají por mesa; porciones percibidas como pequeñas vs precio; confort (A/C) inconsistente.", "challenge": "Rediseñar flujos (señalética, estaciones de bandejas), gestionar picos (pre-order/pick-up), revisar política de porciones/extras/ají, asegurar A/C y confort constantes." },
+                    { "title": "Delivery y agregadores", "detail": "Molestia por mínimos a domicilio (p.ej. $17) y cuentas altas en apps con porciones pequeñas.", "challenge": "Replantear mínimos por zona/hora, crear combos exclusivos de delivery y negociar comisiones con apps para sostener porción y precio percibido." }
                 ],
-                "conclusion": "La marca es icónica y altamente conversada, pero opera en un terreno polarizado donde el precio/valor, la consistencia del sabor, los medios de pago y la experiencia operativa generan fricción. Prioridades: 1) habilitar pagos con tarjeta/QR, 2) recalibrar y estandarizar recetas, 3) ajustar la propuesta de valor, 4) fortalecer el discurso de inclusión y emprendimiento."
+                "conclusion": "La marca es icónica y altamente conversada, pero opera en un terreno polarizado donde el precio/valor, la consistencia del sabor, los medios de pago y la experiencia operativa generan fricción. Prioridades tácticas: 1) habilitar pagos con tarjeta/QR, 2) recalibrar y estandarizar recetas (en especial tigrillo/bolón) con control de temperatura y salado, 3) ajustar la propuesta de valor (porciones, combos y políticas de delivery/ají), 4) fortalecer el discurso de inclusión y emprendimiento con respuestas empáticas y 5) capitalizar la viralidad con activaciones y ofertas por canal. Ejecutar estas mejoras debería elevar satisfacción, reducir la conversación negativa y sostener el crecimiento sin sacrificar autenticidad."
             }
         };
+        // --- FIN DE DATOS JSON ---
 
-        // --- FUNCIONES HELPER ---
-
-        /**
-         * Formatea un número a 'K' si es mayor a 1000.
-         * @param {number} num - El número a formatear.
-         * @returns {string} El número formateado.
-         */
         function formatNumber(num) {
             if (num >= 1000) {
                 return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
             }
-            if (num % 1 !== 0) {
-                 return num.toFixed(2).replace(/\.00$/, '');
-            }
-            return num.toString();
+            return num.toFixed(2).replace(/\.00$/, '');
         }
+        
+        // CORRECCIÓN FINAL GARANTIZADA: FUNCIÓN para generar el gráfico de Correlación con colores
+        function createCorrelationChart() {
+            const variables = ['favorite_count', 'retweet_count', 'user.followers_count', 'user.friends_count'];
+            const labelsMap = { 
+                'favorite_count': 'Likes', 
+                'retweet_count': 'Retweets', 
+                'user.followers_count': 'Seguidores', 
+                'user.friends_count': 'Amigos' 
+            };
+            const labelsX = variables.map(v => labelsMap[v]);
+            
+            // Un solo array para todos los puntos, forzando el color individual
+            const allDataPoints = [];
+            const backgroundColors = [];
 
-        /**
-         * Rellena las tarjetas de Métricas Clave (KPIs).
-         * @param {object} describe - El objeto describe_matrix.
-         */
-        function populateKPIs(describe) {
-            document.getElementById('kpi-total-tweets').textContent = describe.count.id.toLocaleString();
-            document.getElementById('kpi-avg-retweets').textContent = formatNumber(describe.mean.retweet_count);
-            document.getElementById('kpi-avg-favorites').textContent = formatNumber(describe.mean.favorite_count);
-            document.getElementById('kpi-max-engagement').textContent = describe.max.retweet_count.toLocaleString();
-        }
+            variables.forEach((variableX, xIndex) => {
+                variables.forEach((variableY, yIndex) => {
+                    const correlationValue = data.corr_matrix[variableX][variableY];
+                    if (variableX === variableY) return; 
 
-        /**
-         * Rellena la tabla de Top 5 Engagement.
-         * @param {object} engagement - El objeto engagement_matrix.
-         */
-        function populateEngagementTable(engagement) {
-            const tableBody = document.getElementById('engagement-table-body');
-            const engagementData = Object.keys(engagement.total_engagement).map(key => ({
-                id: key,
-                text: engagement.text[key],
-                favorites: engagement.favorite_count[key],
-                retweets: engagement.retweet_count[key],
-                total: engagement.total_engagement[key]
-            }));
+                    const point = { 
+                        x: xIndex, 
+                        y: correlationValue, 
+                        labelY: labelsMap[variableY] 
+                    };
 
-            // Ordenar por 'total' descendente
-            engagementData.sort((a, b) => b.total - a.total);
+                    allDataPoints.push(point);
 
-            tableBody.innerHTML = ''; // Limpiar por si acaso
-            engagementData.slice(0, 5).forEach(item => {
-                const row = tableBody.insertRow();
-                row.insertCell().textContent = item.text.substring(0, 80) + '...';
-                row.insertCell().textContent = item.favorites.toLocaleString();
-                row.insertCell().textContent = item.retweets.toLocaleString();
-                row.insertCell().textContent = formatNumber(item.total);
-            });
-        }
-
-        /**
-         * Genera la tabla de matriz de correlación.
-         * @param {object} corrMatrix - El objeto corr_matrix.
-         */
-        function populateCorrelationTable(corrMatrix) {
-            const tableHead = document.getElementById('corr-table-head');
-            const tableBody = document.getElementById('corr-table-body');
-            const variables = Object.keys(corrMatrix);
-
-            // Limpiar contenido previo
-            tableHead.innerHTML = '';
-            tableBody.innerHTML = '';
-
-            // 1. Generar la fila de encabezado (Columnas)
-            const headerRow = tableHead.insertRow();
-            headerRow.insertCell().innerHTML = ''; // Celda de esquina vacía
-            variables.forEach(v => {
-                const th = document.createElement('th');
-                th.scope = 'col'; // Accesibilidad
-                th.textContent = v.split('.').pop().replace('_count', '');
-                headerRow.appendChild(th);
-            });
-
-            // 2. Generar las filas de datos
-            variables.forEach(rowVar => {
-                const row = tableBody.insertRow();
-                // 2a. Crear el encabezado de fila
-                const rowTh = document.createElement('th');
-                rowTh.scope = 'row'; // Accesibilidad
-                rowTh.innerHTML = `<strong>${rowVar.split('.').pop().replace('_count', '')}</strong>`;
-                row.appendChild(rowTh);
-                
-                // 2b. Crear las celdas de datos
-                variables.forEach(colVar => {
-                    const value = corrMatrix[rowVar][colVar];
-                    const cell = row.insertCell();
-                    cell.textContent = value.toFixed(3);
-                    
-                    // Aplicar clases de color según el valor
-                    const absValue = Math.abs(value);
-                    if (absValue === 1) {
-                         // No colorear la diagonal
-                    } else if (absValue > 0.5) {
-                        cell.classList.add('corr-high');
-                    } else if (absValue > 0.2) {
-                        cell.classList.add('corr-medium');
+                    // Asignación de color según el valor absoluto de la correlación
+                    if (Math.abs(correlationValue) > 0.5) {
+                        backgroundColors.push('var(--color-riesgo-alto)'); // ROJO
+                    } else if (Math.abs(correlationValue) > 0.2) {
+                        backgroundColors.push('var(--color-atencion-medio)'); // NARANJA
                     } else {
-                        cell.classList.add('corr-low'); // Aplicar clase 'low'
+                        backgroundColors.push('var(--color-oportunidad-verde)'); // VERDE
                     }
                 });
             });
+
+
+            const corrChartCtx = document.getElementById('correlationChart').getContext('2d');
+            new Chart(corrChartCtx, {
+                type: 'scatter', 
+                data: {
+                    datasets: [
+                        {
+                            label: 'Correlaciones',
+                            data: allDataPoints,
+                            // Aplicar el array de colores directamente a los puntos
+                            backgroundColor: backgroundColors, 
+                            pointRadius: 8,
+                            pointStyle: 'circle'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: -0.6, 
+                            max: 1.1,
+                            title: { display: true, text: 'Nivel de Correlación (Impacto)', color: 'var(--color-cafe-oscuro)' }
+                        },
+                        x: {
+                            // Usar el tipo 'linear' con callback para simular categorías y permitir colores
+                            type: 'linear', 
+                            min: -0.5, 
+                            max: labelsX.length - 0.5,
+                            ticks: {
+                                color: 'var(--color-cafe-oscuro)',
+                                callback: function(value, index, values) {
+                                    if (value >= 0 && value < labelsX.length) {
+                                        return labelsX[value];
+                                    }
+                                }
+                            },
+                            title: { display: true, text: 'Variables Analizadas', color: 'var(--color-cafe-oscuro)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { 
+                            position: 'top', 
+                            labels: { 
+                                color: 'var(--color-cafe-oscuro)',
+                                // Generar una leyenda custom, ya que tenemos un solo dataset
+                                generateLabels: (chart) => {
+                                    return [
+                                        { text: 'Alto Impacto/Riesgo (> 0.5)', fillStyle: 'var(--color-riesgo-alto)', pointStyle: 'circle' },
+                                        { text: 'Atención/Impacto Medio (> 0.2)', fillStyle: 'var(--color-atencion-medio)', pointStyle: 'circle' },
+                                        { text: 'Baja Dependencia/Oportunidad (< 0.2)', fillStyle: 'var(--color-oportunidad-verde)', pointStyle: 'circle' }
+                                    ];
+                                }
+                            } 
+                        },
+                        title: { display: true, text: 'GRÁFICO ESTRATÉGICO: Impacto Relativo de Métricas (Decisión: ¿Qué Variable Mueve a la otra?)', color: 'var(--color-cafe-oscuro)', font: { size: 16 } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const variableX = labelsX[Math.round(context.parsed.x)]; 
+                                    const variableY = context.raw.labelY; 
+                                    const yValue = context.parsed.y.toFixed(3);
+                                    let classification = '';
+                                    const absValue = Math.abs(context.parsed.y);
+                                    if (absValue > 0.5) classification = ' (Alto Impacto/Riesgo)';
+                                    else if (absValue > 0.2) classification = ' (Atención/Medio Impacto)';
+                                    else classification = ' (Baja Dependencia/Oportunidad)';
+                                    
+                                    return `Correlación ${variableY} con ${variableX}: ${yValue}${classification}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
-        /**
-         * Genera el gráfico de barras de actividad por hora.
-         * @param {object} heatmap - El objeto heatmap.
-         */
-        function createActivityChart(heatmap) {
-            const days = Object.keys(heatmap);
-            // Usar un array de 24 posiciones para las horas
-            const hourlyTotals = Array(24).fill(0);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Llenar KPIs y Conclusión
+            document.getElementById('kpi-total-tweets').textContent = data.describe_matrix.count.id.toLocaleString();
+            document.getElementById('kpi-avg-retweets').textContent = formatNumber(data.describe_matrix.mean.retweet_count);
+            document.getElementById('kpi-max-engagement').textContent = data.describe_matrix.max.retweet_count.toLocaleString();
+            document.getElementById('conclusion-text').textContent = data.topics.conclusion;
+            
+            // CONSOLIDACIÓN DE ENTIDADES (TABLA)
+            const topicTableBody = document.getElementById('topics-table-body');
+            data.topics.topics.slice(0, 5).forEach(topic => { 
+                const row = topicTableBody.insertRow();
+                row.insertCell().innerHTML = `<strong>${topic.title}</strong>`;
+                row.insertCell().innerHTML = `<span class="risk-col">${topic.detail}</span>`;
+                row.insertCell().innerHTML = `<span class="opportunity-col">${topic.challenge}</span>`;
+            });
 
-            days.forEach(day => {
-                Object.keys(heatmap[day]).forEach(hourStr => {
-                    const hour = Math.floor(parseFloat(hourStr)); // "1.0" -> 1
-                    const value = heatmap[day][hourStr];
-                    if (value > 0) {
-                        hourlyTotals[hour] += value;
-                    }
+
+            // Gráfico 1: Táctico (Curva de Actividad)
+            const hourlyTotals = {}; 
+            for(let i = 0; i <= 23; i++) { hourlyTotals[i] = 0; }
+            Object.keys(data.heatmap).forEach(day => {
+                Object.keys(data.heatmap[day]).forEach(hourStr => {
+                    const hour = parseInt(parseFloat(hourStr));
+                    const value = data.heatmap[day][hourStr];
+                    if (value > 0) { hourlyTotals[hour] += value; }
                 });
             });
 
@@ -377,87 +263,173 @@
             new Chart(activityChartCtx, {
                 type: 'bar',
                 data: {
-                    labels: hourlyTotals.map((_, i) => `${i}:00`), // Genera etiquetas "0:00", "1:00", ...
+                    labels: Object.keys(hourlyTotals).map(h => `${h}:00`),
                     datasets: [{
                         label: 'Engagement Total por Hora',
-                        data: hourlyTotals,
-                        backgroundColor: 'var(--color-naranja-oscuro)',
-                        borderColor: 'var(--color-acento-naranja)',
+                        data: Object.values(hourlyTotals),
+                        backgroundColor: 'var(--color-naranja-oscuro)', 
+                        borderColor: 'var(--color-acento-naranja)', 
                         borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { color: 'var(--color-cafe-oscuro)' },
-                            grid: { color: 'rgba(78, 52, 46, 0.1)' }
-                        },
-                        x: {
-                            ticks: { color: 'var(--color-cafe-oscuro)' },
-                            grid: { display: false }
-                        }
-                    },
+                    scales: { y: { beginAtZero: true } },
                     plugins: {
                         legend: { display: false },
-                        title: { 
-                            display: true, 
-                            text: 'Engagement Total por Hora del Día (Sumado)', 
-                            color: 'var(--color-cafe-oscuro)',
-                            font: { size: 16 }
-                        }
+                        title: { display: true, text: 'GRÁFICO TÁCTICO: Curva de Actividad (Decisión: ¿A qué hora maximizar la publicación?)', color: 'var(--color-cafe-oscuro)', font: { size: 16 } }
                     }
                 }
             });
-        }
 
-        /**
-         * Rellena la sección de Temas e Insights.
-         * @param {object} topicsData - El objeto topics.
-         */
-        function populateTopics(topicsData) {
-            const topicsContainer = document.getElementById('topics-container');
-            topicsContainer.innerHTML = ''; // Limpiar
+            // Gráfico 2: Estratégico (Corregido)
+            createCorrelationChart();
+
+            // Llenar Tabla de Correlación (Punto 4)
+            const corrTableBody = document.getElementById('corr-table-body');
+            const variables = Object.keys(data.corr_matrix);
             
-            topicsData.topics.slice(0, 5).forEach(topic => {
-                const card = document.createElement('div');
-                card.className = 'col-lg-12 mb-3'; // Cada tarjeta ocupa el ancho y tiene margen
-                card.innerHTML = `
-                    <div class="card topic-card shadow-sm">
-                        <div class="card-header">
-                            <h5 class="mb-0">${topic.title}</h5>
-                        </div>
-                        <div class="card-body">
-                            <strong>Detalle:</strong> <p class="card-text">${topic.detail}</p>
-                            <strong>Desafío/Recomendación:</strong> <p class="card-text text-desafio">${topic.challenge}</p>
-                        </div>
-                    </div>
-                `;
-                topicsContainer.appendChild(card);
+            const headerRow = document.createElement('tr');
+            headerRow.insertCell().innerHTML = ''; 
+            const labelsMapCorr = { 'user.followers_count': 'Seguidores', 'user.friends_count': 'Amigos', 'id': 'ID Tweet', 'favorite_count': 'Likes', 'retweet_count': 'Retweets' };
+
+            variables.forEach(v => {
+                const th = document.createElement('th');
+                th.textContent = labelsMapCorr[v]; 
+                headerRow.appendChild(th);
             });
-        }
-
-        /**
-         * Rellena el texto de la conclusión general.
-         * @param {object} topicsData - El objeto topics.
-         */
-        function populateConclusion(topicsData) {
-            document.getElementById('conclusion-text').textContent = topicsData.conclusion;
-        }
-
-        // --- INICIALIZACIÓN DEL DASHBOARD ---
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // Llamar a todas las funciones de renderizado
-            populateKPIs(data.describe_matrix);
-            populateEngagementTable(data.engagement_matrix);
-            populateCorrelationTable(data.corr_matrix);
-            createActivityChart(data.heatmap);
-            populateTopics(data.topics);
-            populateConclusion(data.topics);
+            corrTableBody.parentNode.querySelector('thead').appendChild(headerRow);
+            
+            variables.forEach(rowVar => {
+                const row = corrTableBody.insertRow();
+                row.insertCell().innerHTML = `<strong>${labelsMapCorr[rowVar]}</strong>`; 
+                variables.forEach(colVar => {
+                    const value = data.corr_matrix[rowVar][colVar];
+                    const cell = row.insertCell();
+                    cell.textContent = value.toFixed(3);
+                    
+                    // Aplicar clases de color según el valor de correlación
+                    if (Math.abs(value) > 0.5 && Math.abs(value) < 1) {
+                        cell.classList.add('corr-high');
+                    } else if (Math.abs(value) > 0.2) {
+                        cell.classList.add('corr-medium');
+                    } else if (Math.abs(value) < 0.2 && Math.abs(value) > 0.0) {
+                        cell.classList.add('corr-low');
+                    }
+                });
+            });
         });
-
     </script>
+    <div class="header text-center">
+        <h1>Dashboard Estratégico de Valor Consolidado | Café de Tere ☕</h1>
+        <p class="lead">Decisiones de Negocio basadas en el análisis de redes sociales.</p>
+    </div>
+
+    <div class="container">
+
+        <h2 class="mb-3 text-secondary">1. Entidades Cuantitativas Clave (Visión General)</h2>
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="card card-kpi text-dark mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Interacciones Analizadas</h5>
+                        <p class="card-text h2" id="kpi-total-tweets"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-kpi text-dark mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Promedio de Retweets por Mensaje</h5>
+                        <p class="card-text h2" id="kpi-avg-retweets"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-kpi text-dark mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Máximo Impacto (Pico de Viralidad)</h5>
+                        <p class="card-text h2" id="kpi-max-engagement"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2 class="mb-3 text-secondary">2. Matriz Consolidada de Riesgo y Oportunidad (Entidades de Valor)</h2>
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card conclusion-card text-white mb-4 shadow-lg">
+                    <div class="card-body">
+                        <h4 class="card-title">Decisión de Valor Máxima (Prioridad de Inversión)</h4>
+                        <p id="conclusion-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5">
+             <div class="col-lg-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm table-striped table-topic shadow-sm">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Entidad Clave</th>
+                                <th style="width: 40%;" class="risk-header">Riesgo (Fricción / Detalle)</th>
+                                <th style="width: 40%;" class="opportunity-header">Oportunidad (Acción de Valor / Mejora)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topics-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2 class="mb-3 text-secondary">3. Gráficos para Decisiones Estratégicas y Tácticas (Por Color de Valor)</h2>
+        <div class="row mb-5">
+            <div class="col-lg-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <canvas id="correlationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <h2 class="mb-3 text-secondary">4. Evaluación de Riesgo/Impacto (Matriz de Correlación)</h2>
+        <div class="row mb-5">
+            <div class="col-lg-12">
+                <h4 class="mb-3">Correlación para Medir Impacto (Decisión: ¿Dónde enfocar el esfuerzo de marketing?)</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm table-striped text-center">
+                        <thead>
+                            </thead>
+                        <tbody id="corr-table-body">
+                            </tbody>
+                    </table>
+                </div>
+                <p class="small text-muted">
+                    <span style="color: var(--color-riesgo-alto); font-weight: bold;">◼ Alto Riesgo/Impacto (> 0.5):</span> Fuerte dependencia. Invertir en una métrica impactará directamente en la otra.<br>
+                    <span style="color: var(--color-atencion-medio); font-weight: bold;">◼ Atención/Impacto Medio (> 0.2):</span> Correlación considerable. Monitorear de cerca.<br>
+                    <span style="color: var(--color-oportunidad-verde); font-weight: bold;">◼ Baja Dependencia/Oportunidad (< 0.2):</span> Estabilidad. Los cambios en una métrica no impactan mucho a la otra.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
